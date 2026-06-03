@@ -67,9 +67,7 @@ export function useMission() {
   const context = useContext(MissionContext);
 
   if (!context) {
-    throw new Error(
-      "useMission deve ser usado dentro do MissionProvider"
-    );
+    throw new Error("useMission deve ser usado dentro do MissionProvider");
   }
 
   return context;
