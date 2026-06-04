@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Text,
@@ -24,25 +25,62 @@ export default function Configuracoes() {
   const [nave, setNave] = useState(nomeNave);
   const [responsavel, setResponsavel] = useState(comandante);
 
-  function salvar() {
-    if (!missao.trim()) {
-      return Alert.alert("Erro", "Informe o nome da missão.");
+  useEffect(() => {
+  async function carregarDados() {
+    try {
+      const dadosSalvos = await AsyncStorage.getItem(
+        "configuracoesMissao"
+      );
+
+      if (dadosSalvos) {
+        const dados = JSON.parse(dadosSalvos);
+
+        setMissao(dados.missao || "");
+        setNave(dados.nave || "");
+        setResponsavel(dados.responsavel || "");
+      }
+    } catch (error) {
+      console.log("Erro ao carregar dados:", error);
     }
-
-    if (!nave.trim()) {
-      return Alert.alert("Erro", "Informe o nome da nave.");
-    }
-
-    if (!responsavel.trim()) {
-      return Alert.alert("Erro", "Informe o comandante.");
-    }
-
-    setNomeMissao(missao);
-    setNomeNave(nave);
-    setComandante(responsavel);
-
-    Alert.alert("Sucesso", "Configurações salvas!");
   }
+
+  carregarDados();
+}, []);
+
+
+  async function salvar() {
+  if (!missao.trim()) {
+    return Alert.alert("Erro", "Informe o nome da missão.");
+  }
+
+  if (!nave.trim()) {
+    return Alert.alert("Erro", "Informe o nome da nave.");
+  }
+
+  if (!responsavel.trim()) {
+    return Alert.alert("Erro", "Informe o comandante.");
+  }
+
+  setNomeMissao(missao);
+  setNomeNave(nave);
+  setComandante(responsavel);
+
+  try {
+    await AsyncStorage.setItem(
+      "configuracoesMissao",
+      JSON.stringify({
+        missao,
+        nave,
+        responsavel,
+      })
+    );
+  } catch (error) {
+    console.log("Erro ao salvar:", error);
+  }
+
+  Alert.alert("Sucesso", "Configurações salvas!");
+}
+
 
   return (
     <View style={styles.container}>
