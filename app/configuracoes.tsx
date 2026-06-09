@@ -26,66 +26,65 @@ export default function Configuracoes() {
   const [responsavel, setResponsavel] = useState(comandante);
 
   useEffect(() => {
-  async function carregarDados() {
-    try {
-      const dadosSalvos = await AsyncStorage.getItem(
-        "configuracoesMissao"
-      );
+    async function carregarDados() {
+      try {
+        const dadosSalvos = await AsyncStorage.getItem(
+          "configuracoesMissao"
+        );
 
-      if (dadosSalvos) {
-        const dados = JSON.parse(dadosSalvos);
+        if (dadosSalvos) {
+          const dados = JSON.parse(dadosSalvos);
 
-        setMissao(dados.missao || "");
-        setNave(dados.nave || "");
-        setResponsavel(dados.responsavel || "");
+          setMissao(dados.missao || "");
+          setNave(dados.nave || "");
+          setResponsavel(dados.responsavel || "");
+        }
+      } catch (error) {
+        console.log("Erro ao carregar dados:", error);
       }
-    } catch (error) {
-      console.log("Erro ao carregar dados:", error);
     }
-  }
 
-  carregarDados();
-}, []);
-
+    carregarDados();
+  }, []);
 
   async function salvar() {
-  if (!missao.trim()) {
-    return Alert.alert("Erro", "Informe o nome da missão.");
+    if (!missao.trim()) {
+      return Alert.alert("Erro", "Informe o nome da missão.");
+    }
+
+    if (!nave.trim()) {
+      return Alert.alert("Erro", "Informe o nome da nave.");
+    }
+
+    if (!responsavel.trim()) {
+      return Alert.alert("Erro", "Informe o comandante.");
+    }
+
+    setNomeMissao(missao);
+    setNomeNave(nave);
+    setComandante(responsavel);
+
+    try {
+      await AsyncStorage.setItem(
+        "configuracoesMissao",
+        JSON.stringify({
+          missao,
+          nave,
+          responsavel,
+        })
+      );
+    } catch (error) {
+      console.log("Erro ao salvar:", error);
+    }
+
+    Alert.alert("Sucesso", "Configurações salvas!");
   }
-
-  if (!nave.trim()) {
-    return Alert.alert("Erro", "Informe o nome da nave.");
-  }
-
-  if (!responsavel.trim()) {
-    return Alert.alert("Erro", "Informe o comandante.");
-  }
-
-  setNomeMissao(missao);
-  setNomeNave(nave);
-  setComandante(responsavel);
-
-  try {
-    await AsyncStorage.setItem(
-      "configuracoesMissao",
-      JSON.stringify({
-        missao,
-        nave,
-        responsavel,
-      })
-    );
-  } catch (error) {
-    console.log("Erro ao salvar:", error);
-  }
-
-  Alert.alert("Sucesso", "Configurações salvas!");
-}
-
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}> Configurações</Text>
+      <Text style={styles.title}>🔧 Configurações</Text>
 
+      <Text style={styles.label}>📍 Nome da Missão</Text>
       <TextInput
         style={styles.input}
         value={missao}
@@ -94,6 +93,7 @@ export default function Configuracoes() {
         placeholderTextColor="#999"
       />
 
+      <Text style={styles.label}>🛸 Nome da Nave</Text>
       <TextInput
         style={styles.input}
         value={nave}
@@ -102,6 +102,7 @@ export default function Configuracoes() {
         placeholderTextColor="#999"
       />
 
+      <Text style={styles.label}>🧑‍🚀 Comandante</Text>
       <TextInput
         style={styles.input}
         value={responsavel}
@@ -132,6 +133,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  label: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 5,
+    marginTop: 10,
+  },
+
   input: {
     backgroundColor: "#111827",
     color: "#fff",
@@ -144,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00E5FF",
     padding: 15,
     borderRadius: 10,
+    marginTop: 10,
   },
 
   buttonText: {

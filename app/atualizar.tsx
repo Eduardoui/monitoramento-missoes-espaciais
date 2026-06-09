@@ -59,39 +59,35 @@ export default function Atualizar() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}> Atualizar Sensores</Text>
+      <Text style={styles.title}>🪛 Atualização de Sensores</Text>
 
+      <Text style={styles.label}>🔋 Energia (%)</Text>
       <TextInput
         style={styles.input}
-        placeholder="Energia"
-        placeholderTextColor="#999"
         keyboardType="numeric"
         value={novaEnergia}
         onChangeText={setNovaEnergia}
       />
 
+      <Text style={styles.label}>🌡️ Temperatura (°C)</Text>
       <TextInput
         style={styles.input}
-        placeholder="Temperatura"
-        placeholderTextColor="#999"
         keyboardType="numeric"
         value={novaTemperatura}
         onChangeText={setNovaTemperatura}
       />
 
+      <Text style={styles.label}>📡 Comunicação (%)</Text>
       <TextInput
         style={styles.input}
-        placeholder="Comunicação"
-        placeholderTextColor="#999"
         keyboardType="numeric"
         value={novaComunicacao}
         onChangeText={setNovaComunicacao}
       />
 
+      <Text style={styles.label}>📊 Estabilidade Orbital (%)</Text>
       <TextInput
         style={styles.input}
-        placeholder="Estabilidade"
-        placeholderTextColor="#999"
         keyboardType="numeric"
         value={novaEstabilidade}
         onChangeText={setNovaEstabilidade}
@@ -113,28 +109,41 @@ const styles = StyleSheet.create({
 
   title: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 20,
     textAlign: "center",
+    marginBottom: 25,
+    marginTop: 10,
+  },
+
+  label: {
+    color: "#00E5FF",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 6,
+    marginTop: 8,
   },
 
   input: {
     backgroundColor: "#111827",
     color: "#fff",
     padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#1E293B",
   },
 
   button: {
     backgroundColor: "#00E5FF",
-    padding: 15,
-    borderRadius: 10,
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 15,
   },
 
   buttonText: {
     textAlign: "center",
     fontWeight: "bold",
+    fontSize: 16,
   },
 });
